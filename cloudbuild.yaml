@@ -4,7 +4,11 @@ steps:
   args: ['install']
 - name: node
   entrypoint: yarn
-  args: ['test']
+  args: ['build', 'express-cr-app']  
 - name: node
   entrypoint: yarn
-  args: ['affected', '--target', 'build']
+  args: ['build', 'express-cr-app']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--tag=gcr.io/$PROJECT_ID/express-cr-app', '.']
+  images: ['gcr.io/$PROJECT_ID/express-cr-app']
+  dir: './dist/apps/express-cr-app'
