@@ -27,7 +27,6 @@ app.post('/', (req, res) => {
     console.log(`Bad Request: ${errorMessage}`);
     return;
   }
-  // Cast to MessagePublishedEvent for IDE autocompletion
   const pubSubMessage = toMessagePublishedData(req.body);
   const name =
     pubSubMessage.message && pubSubMessage.message.data
