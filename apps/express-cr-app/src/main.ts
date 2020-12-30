@@ -12,6 +12,49 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASS
 })
 
+const app = express()
+
+app.use(express.json())
+
+app.post('/', (req, res) => {
+
+  console.log('req.body', req.body)
+
+  if (!req.body) {
+    const errorMessage = 'no Pub/Sub message received'
+    res.status(200).send(`Bad Request: ${errorMessage}`)
+    console.log(`Bad Request: ${errorMessage}`)
+    return
+  }
+
+  if (!req.body.message) {
+    const errorMessage = 'invalid Pub/Sub message format'
+    res.status(200).send(`Bad Request: ${errorMessage}`)
+    console.log(`Bad Request: ${errorMessage}`)
+    return
+  }
+
+  const pubSubMessage = toMessagePublishedData(req.body)
+  const name =
+    pubSubMessage.message && pubSubMessage.message.data
+      ? Buffer.from(pubSubMessage.message.data, 'base64').toString().trim()
+      : 'World'
+
+  const result = `Hello, ${name}! ID: ${req.get('ce-id') || ''}`
+  
+  console.log(result)
+  res.send(result)
+
+})
+
+const port = process.env.PORT || 3333
+
+const server = app.listen(port, () => {
+  console.log(`Listening on ${port}`)
+})
+
+server.on('error', console.error)
+
 connection.connect((err) => {
 
   if (err) {
@@ -21,46 +64,11 @@ connection.connect((err) => {
 
   console.log('Connected as thread id: ' + connection.threadId);
 
-  const app = express()
-
-  app.use(express.json())
-
-  app.post('/', (req, res) => {
-    console.log('req.body', req.body)
-    if (!req.body) {
-      const errorMessage = 'no Pub/Sub message received'
-      res.status(200).send(`Bad Request: ${errorMessage}`)
-      console.log(`Bad Request: ${errorMessage}`)
-      return
-    }
-    if (!req.body.message) {
-      const errorMessage = 'invalid Pub/Sub message format'
-      res.status(200).send(`Bad Request: ${errorMessage}`)
-      console.log(`Bad Request: ${errorMessage}`)
-      return
-    }
-    const pubSubMessage = toMessagePublishedData(req.body)
-    const name =
-      pubSubMessage.message && pubSubMessage.message.data
-        ? Buffer.from(pubSubMessage.message.data, 'base64').toString().trim()
-        : 'World'
-
-    const result = `Hello, ${name}! ID: ${req.get('ce-id') || ''}`
-    const sql = `INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')`;
-    connection.query(sql, (err, result) => {
-      if (err) throw err;
-      console.log("1 record inserted");
-    })
-    console.log(result)
-    res.send(result)
+  const sql = `INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')`;
+  
+  connection.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log("1 record inserted");
   })
-
-  const port = process.env.PORT || 3333
-
-  const server = app.listen(port, () => {
-    console.log(`Listening on ${port}`)
-  })
-
-  server.on('error', console.error)
-
+  
 })
