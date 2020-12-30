@@ -15,6 +15,7 @@ app.get('/api', (req, res) => {
 });
 
 app.post('/', (req, res) => {
+  console.log(req)
   if (!req.body) {
     const errorMessage = 'no Pub/Sub message received';
     res.status(400).send(`Bad Request: ${errorMessage}`);
