@@ -7,10 +7,11 @@ const pubsub = new PubSub()
 
 async function publishMessage() {
 
-  const dataBuffer = Buffer.from(JSON.stringify({ message: { data: 'testing!' } }))
+  const dataBuffer = Buffer.from(JSON.stringify({ data: 'testing!' }))
 
   try {
     const messageId = await pubsub.topic(process.env.TOPIC_NAME).publish(dataBuffer)
+    console.log('publish to', process.env.TOPIC_NAME);
     console.log(`Message ${messageId} published.`)
   } catch (error) {
     console.error(`Received error while publishing: ${error.message}`)
