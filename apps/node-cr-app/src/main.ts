@@ -1,6 +1,8 @@
 import { createServer } from 'http'
 import { PubSub } from '@google-cloud/pubsub'
 
+console.log(process.env);
+
 const pubsub = new PubSub()
 
 async function publishMessage() {
