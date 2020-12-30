@@ -17,12 +17,15 @@ async function publishMessage() {
 
 }
 
-const server = createServer(async (req, res) => {
-  await publishMessage()
-  res.write(200)
-  res.end(200)
-})
+// const server = createServer(async (req, res) => {
+//   await publishMessage()
+//   res.write(200)
+//   res.end(200)
+// })
 
-const port = process.env.PORT || 8080
+// const port = process.env.PORT || 8080
 
-server.listen(port, () => console.log(`listening on ${port}`))
+// server.listen(port, () => console.log(`listening on ${port}`))
+
+publishMessage().then(console.log, console.warn)
+
