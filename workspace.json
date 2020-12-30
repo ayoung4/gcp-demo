@@ -112,7 +112,7 @@
           "options": {
             "commands": [
               {
-                "command": "nx run express-cr-app:build-node"
+                "command": "nx run node-cr-app:build-node"
               },
               {
                 "command": "ts-node tools/scripts/build-node-cr-app.ts"
