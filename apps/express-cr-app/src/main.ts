@@ -1,4 +1,5 @@
 import * as express from 'express'
+import * as mysql from 'mysql'
 import {
   toMessagePublishedData,
 } from '@google/events/cloud/pubsub/v1/MessagePublishedData'
@@ -32,9 +33,27 @@ app.post('/', (req, res) => {
   res.send(result)
 })
 
-const port = process.env.PORT || 3333
-const server = app.listen(port, () => {
-  console.log(`Listening on ${port}`)
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASS
 })
 
-server.on('error', console.error)
+connection.connect((err) => {
+  if (err) {
+    console.error('Error connecting: ' + err.stack);
+    return;
+  }
+  console.log('Connected as thread id: ' + connection.threadId);
+  
+  const port = process.env.PORT || 3333
+
+  const server = app.listen(port, () => {
+    console.log(`Listening on ${port}`)
+  })
+
+  server.on('error', console.error)
+
+})

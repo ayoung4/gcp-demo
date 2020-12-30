@@ -30,6 +30,7 @@
     "@google-cloud/pubsub": "^2.7.0",
     "@google/events": "^3.2.1",
     "express": "4.17.1",
+    "mysql": "^2.18.1",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
@@ -42,6 +43,7 @@
     "@nrwl/workspace": "11.0.18",
     "@types/express": "4.17.0",
     "@types/jest": "26.0.8",
+    "@types/mysql": "^2.15.17",
     "@types/node": "12.12.38",
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
