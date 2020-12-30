@@ -25,6 +25,9 @@
   "projects": {
     "express-cr-app": {
       "tags": []
+    },
+    "node-cr-app": {
+      "tags": []
     }
   }
 }

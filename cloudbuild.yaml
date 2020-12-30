@@ -4,14 +4,19 @@ steps:
   args: ['install']
 - name: node
   entrypoint: yarn
-  args: ['build', 'express-cr-app']  
+  args: ['build', 'express-cr-app']
 - name: node
   entrypoint: yarn
-  args: ['build', 'express-cr-app']
+  args: ['build', 'node-cr-app']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/express-cr-app:$SHORT_SHA', '.']
   dir: './dist/apps/express-cr-app'
 - name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/node-cr-app:$SHORT_SHA', '.']
+  dir: './dist/apps/node-cr-app'
+- name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/$PROJECT_ID/express-cr-app:$SHORT_SHA']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/$PROJECT_ID/node-cr-app:$SHORT_SHA']
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'run', 'deploy', 'express-cr-app', '--image=gcr.io/$PROJECT_ID/express-cr-app:$SHORT_SHA', '--platform=managed', '--region=us-east1']
+  args: ['beta', 'run', 'deploy', 'trigger', '--image=gcr.io/$PROJECT_ID/express-cr-app:$SHORT_SHA', '--platform=managed', '--region=us-east1']
