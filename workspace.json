@@ -80,7 +80,7 @@
       "projectType": "application",
       "prefix": "node-cr-app",
       "targets": {
-        "node-build": {
+        "build-node": {
           "executor": "@nrwl/node:build",
           "outputs": [
             "{options.outputPath}"
