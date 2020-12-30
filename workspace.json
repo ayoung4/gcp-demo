@@ -80,7 +80,7 @@
       "projectType": "application",
       "prefix": "node-cr-app",
       "targets": {
-        "build": {
+        "node-build": {
           "executor": "@nrwl/node:build",
           "outputs": [
             "{options.outputPath}"
@@ -105,6 +105,20 @@
                 }
               ]
             }
+          }
+        },
+        "build": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "nx run express-cr-app:build-node"
+              },
+              {
+                "command": "ts-node tools/scripts/build-node-cr-app.ts"
+              }
+            ],
+            "parallel": false
           }
         },
         "serve": {
