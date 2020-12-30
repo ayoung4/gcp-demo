@@ -21,7 +21,9 @@ async function publishMessage() {
 
 const server = createServer(async (req, res) => {
   await publishMessage()
-  res.end(200)
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.write('sent!');
+  res.end();
 })
 
 const port = process.env.PORT || 8080
