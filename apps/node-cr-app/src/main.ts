@@ -7,7 +7,7 @@ const pubsub = new PubSub()
 
 async function publishMessage() {
 
-  const dataBuffer = Buffer.from(JSON.stringify({ foo: 'bar' }));
+  const dataBuffer = Buffer.from(JSON.stringify({ data: 'testing!' }));
 
   try {
     const messageId = await pubsub.topic(process.env.TOPIC_NAME).publish(dataBuffer);
@@ -19,15 +19,11 @@ async function publishMessage() {
 
 }
 
-// const server = createServer(async (req, res) => {
-//   await publishMessage()
-//   res.write(200)
-//   res.end(200)
-// })
+const server = createServer(async (req, res) => {
+  await publishMessage()
+  res.end(200)
+})
 
-// const port = process.env.PORT || 8080
+const port = process.env.PORT || 8080
 
-// server.listen(port, () => console.log(`listening on ${port}`))
-
-publishMessage().then(console.log, console.warn)
-
+server.listen(port, () => console.log(`listening on ${port}`))
